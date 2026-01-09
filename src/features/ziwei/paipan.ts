@@ -2,7 +2,7 @@
  * 紫微斗数排盘算法
  */
 
-import { ZiWeiPan, GongInfo, Gong, ZhuXing } from './types';
+import { ZiWeiPan, GongInfo, ZhuXing } from './types';
 import { GONG_LIST, ZHU_XING_LIST, DI_ZHI_LIST } from './constants';
 
 /**

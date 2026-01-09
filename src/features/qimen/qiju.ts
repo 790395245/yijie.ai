@@ -5,12 +5,7 @@
 import {
   QiMenPan,
   GongInfo,
-  TianGan,
-  DiZhi,
-  BaMen,
-  JiuXing,
-  BaShen,
-  Gong
+  TianGan
 } from './types';
 import {
   TIAN_GAN_LIST,

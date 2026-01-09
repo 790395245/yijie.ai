@@ -2,8 +2,6 @@
  * AI解读服务模块
  */
 
-import Anthropic from '@anthropic-ai/sdk';
-
 /**
  * 调用Claude API进行卦象解读
  * @param prompt 解读prompt
@@ -30,45 +28,8 @@ export async function interpretWithClaude(
     return interpretWithClaudeProxy(prompt, apiKey, baseURL, onChunk, finalModel);
   }
 
-  // 使用官方Anthropic SDK
-  const client = new Anthropic({
-    apiKey,
-    dangerouslyAllowBrowser: true
-  });
-
-  try {
-    let fullResponse = '';
-
-    const response = await client.messages.create({
-      model: finalModel,
-      max_tokens: 2000,
-      messages: [
-        {
-          role: 'user',
-          content: prompt
-        }
-      ],
-      stream: true
-    });
-
-    for await (const event of response) {
-      if (
-        event.type === 'content_block_delta' &&
-        event.delta.type === 'text_delta'
-      ) {
-        const text = event.delta.text;
-        fullResponse += text;
-        if (onChunk) {
-          onChunk(text);
-        }
-      }
-    }
-
-    return fullResponse;
-  } catch (error) {
-    console.error('AI解读失败:', error);
-    throw new Error('AI解读失败，请检查API密钥或网络连接');
-  }
+  // 官方SDK需要在服务端使用，浏览器环境请提供baseURL
+  throw new Error('浏览器环境下使用Claude API需要提供baseURL参数');
 }
 
 /**

@@ -33,3 +33,4 @@ AI解读失败: TypeError: Cannot read properties of undefined (reading 'stream'
 1.AI解读需要对AI的markdown语法进行正确展示。
 2.AI解读需要增加一个输入框，让用户可以在解读前先输入自己想问题内容。也可以让用户和AI连续对话追问。
 3.生成README
+构建这个项目，如果有报错直接解决

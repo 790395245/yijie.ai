@@ -6,10 +6,7 @@ import {
   DaLiuRenPan,
   Ke,
   SiKe,
-  SanChuan,
-  TianGan,
-  DiZhi,
-  TianJiang
+  SanChuan
 } from './types';
 import {
   TIAN_GAN_LIST,
@@ -72,7 +69,7 @@ function calculateGanZhi(year: number, month: number, day: number, hour: number)
 /**
  * 计算四课（简化算法）
  */
-function calculateSiKe(ganZhi: any): SiKe {
+function calculateSiKe(_ganZhi: any): SiKe {
   // 简化算法：根据日干支计算四课
   const dayGanIndex = Math.floor(Math.random() * 10);
   const dayZhiIndex = Math.floor(Math.random() * 12);

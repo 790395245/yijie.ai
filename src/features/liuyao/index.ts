@@ -7,7 +7,7 @@ export * from './constants';
 export * from './qigua';
 export * from './parser';
 
-import { Yao } from './types';
+import { Yao, YinYang } from './types';
 import { randomQiGua, timeQiGua } from './qigua';
 import { getGuaName } from './parser';
 
@@ -54,7 +54,7 @@ export function performLiuYao(
     const bianYaoList = yaoList.map(yao => ({
       ...yao,
       yinYang: yao.isChanging
-        ? (yao.yinYang === '阳' ? '阴' as const : '阳' as const)
+        ? (yao.yinYang === YinYang.Yang ? YinYang.Yin : YinYang.Yang)
         : yao.yinYang,
       isChanging: false
     }));
@@ -71,7 +71,7 @@ export function performLiuYao(
       yaoList: yaoList.map(yao => ({
         ...yao,
         yinYang: yao.isChanging
-          ? (yao.yinYang === '阳' ? '阴' as const : '阳' as const)
+          ? (yao.yinYang === YinYang.Yang ? YinYang.Yin : YinYang.Yang)
           : yao.yinYang,
         isChanging: false
       }))
