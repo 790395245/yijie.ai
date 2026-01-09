@@ -123,11 +123,11 @@ export function DaLiuRenDemo({ isSettingsOpen, onSettingsClose }: DaLiuRenDemoPr
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex gap-4 justify-center">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
         <motion.button
           onClick={handleTimeQiKe}
-          className="px-6 py-3 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white rounded-lg font-medium transition-colors"
+          className="px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white rounded-lg font-medium transition-colors"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
@@ -182,16 +182,16 @@ export function DaLiuRenDemo({ isSettingsOpen, onSettingsClose }: DaLiuRenDemoPr
 
       {messages.length > 0 && (
         <motion.div
-          className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-xl p-6 border border-purple-500/30 space-y-4"
+          className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 backdrop-blur-sm rounded-xl p-4 sm:p-6 border border-purple-500/30 space-y-3 sm:space-y-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 flex items-center gap-2">
             <span>🔮</span>
             <span>AI解读</span>
           </h3>
-          <div className="space-y-4 max-h-[600px] overflow-y-auto">
+          <div className="space-y-3 sm:space-y-4 max-h-[400px] sm:max-h-[600px] overflow-y-auto">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -199,14 +199,14 @@ export function DaLiuRenDemo({ isSettingsOpen, onSettingsClose }: DaLiuRenDemoPr
                   message.role === 'user'
                     ? 'bg-blue-900/30 border-blue-500/30'
                     : 'bg-purple-900/30 border-purple-500/30'
-                } border rounded-lg p-4`}
+                } border rounded-lg p-3 sm:p-4`}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm font-semibold text-gray-300">
+                  <span className="text-xs sm:text-sm font-semibold text-gray-300">
                     {message.role === 'user' ? '👤 您' : '🤖 AI'}
                   </span>
                 </div>
-                <div className="text-gray-200 prose prose-invert prose-sm max-w-none">
+                <div className="text-sm sm:text-base text-gray-200 prose prose-invert prose-sm max-w-none">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
                     {message.content}
                   </ReactMarkdown>
@@ -216,9 +216,9 @@ export function DaLiuRenDemo({ isSettingsOpen, onSettingsClose }: DaLiuRenDemoPr
             <div ref={messagesEndRef} />
           </div>
           {isInterpreting && (
-            <div className="mt-4 flex items-center gap-2 text-purple-300">
+            <div className="mt-3 sm:mt-4 flex items-center gap-2 text-purple-300">
               <div className="animate-pulse">●</div>
-              <span className="text-sm">正在生成解读...</span>
+              <span className="text-xs sm:text-sm">正在生成解读...</span>
             </div>
           )}
         </motion.div>
@@ -231,7 +231,7 @@ export function DaLiuRenDemo({ isSettingsOpen, onSettingsClose }: DaLiuRenDemoPr
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <input
               type="text"
               value={userQuestion}
@@ -242,13 +242,13 @@ export function DaLiuRenDemo({ isSettingsOpen, onSettingsClose }: DaLiuRenDemoPr
                 }
               }}
               placeholder={messages.length === 0 ? "输入您的问题（可选），或直接点击获取解读..." : "继续提问..."}
-              className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50"
+              className="flex-1 px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/50"
               disabled={isInterpreting}
             />
             <motion.button
               onClick={handleInterpret}
               disabled={isInterpreting}
-              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              className="px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >

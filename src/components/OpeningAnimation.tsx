@@ -48,7 +48,7 @@ export function OpeningAnimation({ onSelect }: OpeningAnimationProps) {
       {/* 太极八卦旋转 */}
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
-          className="text-[20rem] bg-gradient-to-br from-indigo-500/20 to-purple-500/20 bg-clip-text text-transparent"
+          className="text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] bg-gradient-to-br from-indigo-500/20 to-purple-500/20 bg-clip-text text-transparent"
           animate={{ rotate: 360 }}
           transition={{
             duration: 8,
@@ -62,12 +62,12 @@ export function OpeningAnimation({ onSelect }: OpeningAnimationProps) {
 
       {/* 占卜类型卡片 - 固定在底部 */}
       {showCards && (
-        <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-6 max-w-6xl mx-auto px-8">
+        <div className="absolute bottom-4 sm:bottom-8 left-0 right-0 z-10 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 md:gap-6 max-w-6xl mx-auto px-4 sm:px-6 md:px-8">
           {DIVINATION_TYPES.map((type, index) => (
             <motion.button
               key={type.id}
               onClick={() => onSelect(type.id)}
-              className="flex-1 bg-gradient-to-br from-gray-900/60 to-indigo-950/60 backdrop-blur-xl rounded-xl p-6 border border-indigo-500/30 hover:border-indigo-400 hover:bg-gradient-to-br hover:from-gray-900/80 hover:to-indigo-950/80 transition-all cursor-pointer shadow-2xl"
+              className="flex-1 bg-gradient-to-br from-gray-900/60 to-indigo-950/60 backdrop-blur-xl rounded-xl p-4 sm:p-5 md:p-6 border border-indigo-500/30 hover:border-indigo-400 hover:bg-gradient-to-br hover:from-gray-900/80 hover:to-indigo-950/80 transition-all cursor-pointer shadow-2xl"
               initial={{ opacity: 0, y: 50, scale: 0.8 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               whileHover={{ scale: 1.05, y: -5, boxShadow: '0 20px 40px rgba(99, 102, 241, 0.3)' }}
@@ -79,9 +79,9 @@ export function OpeningAnimation({ onSelect }: OpeningAnimationProps) {
               }}
             >
               <div className="text-center">
-                <div className="text-6xl mb-3 filter drop-shadow-lg">{type.icon}</div>
-                <h3 className="text-2xl font-bold bg-gradient-to-r from-indigo-200 to-purple-200 bg-clip-text text-transparent mb-2">{type.name}</h3>
-                <p className="text-indigo-300/80 text-sm font-light">{type.description}</p>
+                <div className="text-4xl sm:text-5xl md:text-6xl mb-2 sm:mb-3 filter drop-shadow-lg">{type.icon}</div>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-indigo-200 to-purple-200 bg-clip-text text-transparent mb-1 sm:mb-2">{type.name}</h3>
+                <p className="text-indigo-300/80 text-xs sm:text-sm font-light">{type.description}</p>
               </div>
             </motion.button>
           ))}
@@ -90,17 +90,17 @@ export function OpeningAnimation({ onSelect }: OpeningAnimationProps) {
 
       {/* 副标题 - 固定在顶部 */}
       <motion.div
-        className="absolute top-8 left-0 right-0 text-center z-20"
+        className="absolute top-4 sm:top-6 md:top-8 left-0 right-0 text-center z-20 px-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
-        <p className="text-xl text-indigo-200/90 font-light tracking-wider">探索古老智慧 · 解读天地玄机</p>
+        <p className="text-sm sm:text-lg md:text-xl text-indigo-200/90 font-light tracking-wider">探索古老智慧 · 解读天地玄机</p>
       </motion.div>
 
       {/* 标题图片 - 居中 */}
       <motion.div
-        className="absolute inset-0 flex items-center justify-center px-8"
+        className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 md:px-8"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5, duration: 1 }}
@@ -108,7 +108,7 @@ export function OpeningAnimation({ onSelect }: OpeningAnimationProps) {
         <img
           src="/yijie-logo.png"
           alt="易解"
-          className="w-full max-w-4xl h-auto filter drop-shadow-2xl"
+          className="w-full max-w-xs sm:max-w-2xl md:max-w-3xl lg:max-w-4xl h-auto filter drop-shadow-2xl"
           style={{ filter: 'invert(1) brightness(0.9)' }}
         />
       </motion.div>

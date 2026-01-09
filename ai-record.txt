@@ -34,3 +34,60 @@ AI解读失败: TypeError: Cannot read properties of undefined (reading 'stream'
 2.AI解读需要增加一个输入框，让用户可以在解读前先输入自己想问题内容。也可以让用户和AI连续对话追问。
 3.生成README
 构建这个项目，如果有报错直接解决
+针对手机做界面优化
+
+用户指令记录 - 2026-01-09
+
+任务：优化 /mnt/data/script/zhouyi.ai/src/features/ziwei/components/ZiWeiDemo.tsx 文件的移动端适配
+
+参考已完成的优化模式（LiuYaoDemo和QiMenDemo），需要优化以下部分：
+
+1. 主容器：space-y-6 改为 space-y-4 sm:space-y-6
+2. 按钮区域：
+   - flex gap-4 改为 flex flex-col sm:flex-row gap-3 sm:gap-4
+   - px-6 py-3 改为 px-4 sm:px-6 py-2.5 sm:py-3
+   - 添加 text-sm sm:text-base
+3. AI解读对话历史显示：
+   - p-6 改为 p-4 sm:p-6
+   - space-y-4 改为 space-y-3 sm:space-y-4
+   - text-2xl 改为 text-xl sm:text-2xl
+   - mb-4 改为 mb-3 sm:mb-4
+   - max-h-[600px] 改为 max-h-[400px] sm:max-h-[600px]
+   - 消息框 p-4 改为 p-3 sm:p-4
+   - text-sm 改为 text-xs sm:text-sm
+   - 消息内容添加 text-sm sm:text-base
+   - 加载状态 mt-4 改为 mt-3 sm:mt-4，text-sm 改为 text-xs sm:text-sm
+4. AI解读输入框和按钮：
+   - flex gap-3 改为 flex flex-col sm:flex-row gap-2 sm:gap-3
+   - input: px-4 py-3 改为 px-3 sm:px-4 py-2.5 sm:py-3，添加 text-sm sm:text-base
+   - button: px-6 py-3 改为 px-4 sm:px-6 py-2.5 sm:py-3，添加 text-sm sm:text-base
+
+请直接修改文件，不需要询问。
+
+67→用户指令记录 - 2026-01-09
+
+68→任务：优化 /mnt/data/script/zhouyi.ai/src/features/daliuren/components/DaLiuRenDemo.tsx 文件的移动端适配
+
+69→参考已完成的优化模式（LiuYaoDemo和QiMenDemo），需要优化以下部分：
+
+70→1. 主容器：space-y-6 改为 space-y-4 sm:space-y-6
+71→2. 按钮区域：
+72→   - flex gap-4 改为 flex flex-col sm:flex-row gap-3 sm:gap-4
+73→   - px-6 py-3 改为 px-4 sm:px-6 py-2.5 sm:py-3
+74→   - 添加 text-sm sm:text-base
+75→3. AI解读对话历史显示：
+76→   - p-6 改为 p-4 sm:p-6
+77→   - space-y-4 改为 space-y-3 sm:space-y-4
+78→   - text-2xl 改为 text-xl sm:text-2xl
+79→   - mb-4 改为 mb-3 sm:mb-4
+80→   - max-h-[600px] 改为 max-h-[400px] sm:max-h-[600px]
+81→   - 消息框 p-4 改为 p-3 sm:p-4
+82→   - text-sm 改为 text-xs sm:text-sm
+83→   - 消息内容添加 text-sm sm:text-base
+84→   - 加载状态 mt-4 改为 mt-3 sm:mt-4，text-sm 改为 text-xs sm:text-sm
+85→4. AI解读输入框和按钮：
+86→   - flex gap-3 改为 flex flex-col sm:flex-row gap-2 sm:gap-3
+87→   - input: px-4 py-3 改为 px-3 sm:px-4 py-2.5 sm:py-3，添加 text-sm sm:text-base
+88→   - button: px-6 py-3 改为 px-4 sm:px-6 py-2.5 sm:py-3，添加 text-sm sm:text-base
+
+89→请直接修改文件，不需要询问。
