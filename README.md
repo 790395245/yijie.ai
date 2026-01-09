@@ -88,13 +88,33 @@ npm run dev
 npm run build
 ```
 
-构建产物将生成在 `dist` 目录。
+**构建过程：**
+1. TypeScript 编译检查（tsc）
+2. Vite 打包优化
+3. 生成生产环境代码
+
+**输出目录：** `dist/`
+
+构建完成后，`dist` 目录包含：
+- `index.html` - 入口HTML文件
+- `assets/` - 优化后的JS、CSS和静态资源
+- 其他静态文件
+
+**部署：**
+将 `dist` 目录的内容部署到任何静态文件服务器即可，如：
+- Nginx
+- Apache
+- Vercel
+- Netlify
+- GitHub Pages
 
 ### 预览生产版本
 
 ```bash
 npm run preview
 ```
+
+在本地预览构建后的生产版本，默认运行在 `http://localhost:4173`
 
 ## 📖 使用说明
 
