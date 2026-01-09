@@ -11,9 +11,11 @@ interface SettingsPanelProps {
   apiUrl: string;
   apiKey: string;
   apiType: 'openai' | 'claude';
+  model: string;
   onApiUrlChange: (url: string) => void;
   onApiKeyChange: (key: string) => void;
   onApiTypeChange: (type: 'openai' | 'claude') => void;
+  onModelChange: (model: string) => void;
 }
 
 export function SettingsPanel({
@@ -22,14 +24,17 @@ export function SettingsPanel({
   apiUrl,
   apiKey,
   apiType,
+  model,
   onApiUrlChange,
   onApiKeyChange,
-  onApiTypeChange
+  onApiTypeChange,
+  onModelChange
 }: SettingsPanelProps) {
   // 临时状态，用于编辑
   const [tempApiUrl, setTempApiUrl] = useState(apiUrl);
   const [tempApiKey, setTempApiKey] = useState(apiKey);
   const [tempApiType, setTempApiType] = useState(apiType);
+  const [tempModel, setTempModel] = useState(model);
 
   // 当弹窗打开时，同步父组件的值到临时状态
   useEffect(() => {
@@ -37,14 +42,16 @@ export function SettingsPanel({
       setTempApiUrl(apiUrl);
       setTempApiKey(apiKey);
       setTempApiType(apiType);
+      setTempModel(model);
     }
-  }, [isOpen, apiUrl, apiKey, apiType]);
+  }, [isOpen, apiUrl, apiKey, apiType, model]);
 
   // 保存设置
   const handleSave = () => {
     onApiUrlChange(tempApiUrl);
     onApiKeyChange(tempApiKey);
     onApiTypeChange(tempApiType);
+    onModelChange(tempModel);
     onClose();
   };
 
@@ -141,6 +148,19 @@ export function SettingsPanel({
                       placeholder={tempApiType === 'claude' ? 'sk-ant-...' : 'sk-...'}
                       className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400"
                     />
+                  </div>
+
+                  {/* 模型 */}
+                  <div>
+                    <label className="block text-sm text-gray-300 mb-2">模型</label>
+                    <input
+                      type="text"
+                      value={tempModel}
+                      onChange={(e) => setTempModel(e.target.value)}
+                      placeholder={tempApiType === 'claude' ? 'claude-3-opus-20240229' : 'gpt-4 或 Qwen/Qwen3-8B'}
+                      className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400"
+                    />
+                    <p className="text-xs text-gray-400 mt-1">可选，留空使用默认模型</p>
                   </div>
                 </div>
 

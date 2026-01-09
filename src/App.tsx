@@ -5,6 +5,7 @@ import { QiMenDemo } from './features/qimen/components/QiMenDemo'
 import { DaLiuRenDemo } from './features/daliuren/components/DaLiuRenDemo'
 import { ZiWeiDemo } from './features/ziwei/components/ZiWeiDemo'
 import { OpeningAnimation } from './components/OpeningAnimation'
+import { BackToTop } from './components/BackToTop'
 
 function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -74,7 +75,7 @@ function App() {
               {/* 标题区域 */}
               <div className="space-y-6">
                 <h1 className="text-6xl font-bold bg-gradient-to-r from-purple-300 via-indigo-300 to-purple-300 bg-clip-text text-transparent mb-4 tracking-wide">
-                  周易AI
+                  易解
                 </h1>
                 <p className="text-xl text-indigo-200/90 font-light tracking-wider">
                   探索古老智慧 · 解读天地玄机
@@ -120,6 +121,9 @@ function App() {
               </div>
             </main>
           </div>
+
+          {/* 回到顶部按钮 */}
+          <BackToTop />
         </div>
       )}
     </>

@@ -25,3 +25,11 @@
 这是favicon
 
 AI解读失败: TypeError: Cannot read properties of undefined (reading 'stream')
+
+如果用户没填设置，默认使用这个免费公益接口（模型：Qwen/Qwen3-8B，url：https://api.siliconflow.cn/v1， apikey：sk-htvermaiqopfvbcszznydcmepvpncyypbxtbcpcujzxpwrwk）
+
+调用的还是gpt4，不是Qwen/Qwen3-8B。  不要预填在设置框里。 如果用户没填设置，就从环境变量中提取。记得更新gitignore，不要上传我的apikey
+
+1.AI解读需要对AI的markdown语法进行正确展示。
+2.AI解读需要增加一个输入框，让用户可以在解读前先输入自己想问题内容。也可以让用户和AI连续对话追问。
+3.生成README

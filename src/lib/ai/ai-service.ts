@@ -10,20 +10,24 @@ import Anthropic from '@anthropic-ai/sdk';
  * @param apiKey Claude API密钥
  * @param baseURL 自定义API端点（可选）
  * @param onChunk 流式输出回调函数
+ * @param model 模型名称（可选）
  */
 export async function interpretWithClaude(
   prompt: string,
   apiKey: string,
   baseURL?: string,
-  onChunk?: (text: string) => void
+  onChunk?: (text: string) => void,
+  model?: string
 ): Promise<string> {
   if (!apiKey) {
     throw new Error('请提供Claude API密钥');
   }
 
+  const finalModel = model || import.meta.env.VITE_DEFAULT_MODEL || 'claude-sonnet-4-5-20250929';
+
   // 如果提供了自定义baseURL，使用fetch直接调用（适用于第三方代理）
   if (baseURL) {
-    return interpretWithClaudeProxy(prompt, apiKey, baseURL, onChunk);
+    return interpretWithClaudeProxy(prompt, apiKey, baseURL, onChunk, finalModel);
   }
 
   // 使用官方Anthropic SDK
@@ -36,7 +40,7 @@ export async function interpretWithClaude(
     let fullResponse = '';
 
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-5-20250929',
+      model: finalModel,
       max_tokens: 2000,
       messages: [
         {
@@ -74,11 +78,13 @@ async function interpretWithClaudeProxy(
   prompt: string,
   apiKey: string,
   baseURL: string,
-  onChunk?: (text: string) => void
+  onChunk?: (text: string) => void,
+  model?: string
 ): Promise<string> {
   try {
     let fullResponse = '';
     const url = `${baseURL}/v1/messages`;
+    const finalModel = model || 'claude-sonnet-4-5-20250929';
 
     const response = await fetch(url, {
       method: 'POST',
@@ -88,7 +94,7 @@ async function interpretWithClaudeProxy(
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20250929',
+        model: finalModel,
         max_tokens: 2000,
         messages: [
           {
@@ -152,12 +158,14 @@ async function interpretWithClaudeProxy(
  * @param apiKey OpenAI API密钥
  * @param baseURL 自定义API端点
  * @param onChunk 流式输出回调函数
+ * @param model 模型名称（可选）
  */
 export async function interpretWithOpenAI(
   prompt: string,
   apiKey: string,
   baseURL: string,
-  onChunk?: (text: string) => void
+  onChunk?: (text: string) => void,
+  model?: string
 ): Promise<string> {
   if (!apiKey) {
     throw new Error('请提供OpenAI API密钥');
@@ -165,6 +173,8 @@ export async function interpretWithOpenAI(
   if (!baseURL) {
     throw new Error('请提供OpenAI API端点URL');
   }
+
+  const finalModel = model || import.meta.env.VITE_DEFAULT_MODEL || 'Qwen/Qwen2.5-7B-Instruct';
 
   try {
     let fullResponse = '';
@@ -177,7 +187,7 @@ export async function interpretWithOpenAI(
         'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: finalModel,
         messages: [
           {
             role: 'user',
