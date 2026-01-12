@@ -3,6 +3,7 @@
  */
 
 import { QiMenPan, GongInfo, TianGan, DiZhi } from './types';
+import { QiMenResult } from './qiju';
 import { GONG_NAMES, TIAN_GAN_KE, TIAN_GAN_RU_MU, DI_ZHI_CHONG, XUN_KONG } from './constants';
 
 /**
@@ -63,9 +64,23 @@ export function checkKongWang(diZhi: DiZhi, xunShou: TianGan): boolean {
 
 
 /**
- * 将奇门遁甲盘解析为文本描述
+ * 将奇门遁甲盘解析为文本描述（支持旧类型）
  */
-export function parseQiMenPan(pan: QiMenPan): string {
+export function parseQiMenPan(pan: QiMenPan): string;
+/**
+ * 将奇门遁甲盘解析为文本描述（支持新类型）
+ */
+export function parseQiMenPan(pan: QiMenResult): string;
+/**
+ * 将奇门遁甲盘解析为文本描述（实现）
+ */
+export function parseQiMenPan(pan: QiMenPan | QiMenResult): string {
+  // 类型守卫：检查是否为新的 QiMenResult 类型
+  if ('basicInfo' in pan && 'jiuGongAnalysis' in pan) {
+    return parseQiMenResult(pan as QiMenResult);
+  }
+
+  // 处理旧的 QiMenPan 类型
   let result = '';
 
   // 基本信息
@@ -81,6 +96,48 @@ export function parseQiMenPan(pan: QiMenPan): string {
   });
 
   return result;
+}
+
+/**
+ * 解析新的 QiMenResult 类型
+ */
+function parseQiMenResult(result: QiMenResult): string {
+  let text = '';
+
+  // 基本信息
+  text += `起局时间：${result.basicInfo.date}\n`;
+  text += `农历：${result.basicInfo.lunarDate}\n`;
+  text += `局数：${result.juShu.fullName}\n`;
+  text += `值符：${result.zhiFuXing}（${result.zhiFuGong}宫）\n`;
+  text += `值使：${result.zhiShiMen}（${result.zhiShiGong}宫）\n`;
+  text += `旬首：${result.xunShou}\n\n`;
+
+  // 九宫信息
+  text += '九宫布局：\n';
+  for (let i = 1; i <= 9; i++) {
+    const gongAnalysis = result.jiuGongAnalysis[i];
+    if (gongAnalysis) {
+      text += `\n【${gongAnalysis.gongName}宫（${gongAnalysis.direction}）】\n`;
+      text += `  天盘：${result.tianPan[i] || ''}\n`;
+      text += `  地盘：${result.diPan[i] || ''}\n`;
+      text += `  九星：${gongAnalysis.xing}\n`;
+      text += `  八门：${gongAnalysis.men}\n`;
+      text += `  八神：${gongAnalysis.shen}\n`;
+      text += `  暗干：${result.anGan[i] || ''}\n`;
+      text += `  吉凶：${gongAnalysis.jiXiongText}\n`;
+    }
+  }
+
+  // 综合分析
+  text += `\n【综合分析】\n`;
+  text += `总体吉凶：${result.analysis.overallJiXiongText}\n`;
+  text += `最佳方位：${result.analysis.bestGong ? result.jiuGongAnalysis[result.analysis.bestGong]?.direction : '无'}\n`;
+  text += `\n建议：\n`;
+  result.analysis.suggestions.forEach((suggestion, index) => {
+    text += `${index + 1}. ${suggestion}\n`;
+  });
+
+  return text;
 }
 
 /**

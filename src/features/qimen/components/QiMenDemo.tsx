@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { timeQiJu, QiMenPan, parseQiMenPan, GongInfo, GONG_NAMES } from '../index';
+import { calculate, QiMenResult, parseQiMenPan } from '../index';
 import { interpretWithClaude, interpretWithOpenAI } from '@/lib/ai';
 import { SettingsPanel } from '@/components/SettingsPanel';
 
@@ -17,7 +17,7 @@ interface Message {
 }
 
 export function QiMenDemo({ isSettingsOpen, onSettingsClose }: QiMenDemoProps) {
-  const [result, setResult] = useState<QiMenPan | null>(null);
+  const [result, setResult] = useState<QiMenResult | null>(null);
   const [apiUrl, setApiUrl] = useState<string>('');
   const [apiKey, setApiKey] = useState<string>('');
   const [apiType, setApiType] = useState<'openai' | 'claude'>('openai');
@@ -26,13 +26,14 @@ export function QiMenDemo({ isSettingsOpen, onSettingsClose }: QiMenDemoProps) {
   const [userQuestion, setUserQuestion] = useState<string>('');
   const [isInterpreting, setIsInterpreting] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const handleTimeQiJu = () => {
-    const res = timeQiJu();
+    const res = calculate(new Date());
     setResult(res);
     setMessages([]);
     setUserQuestion('');
@@ -59,6 +60,10 @@ export function QiMenDemo({ isSettingsOpen, onSettingsClose }: QiMenDemoProps) {
     if (question) {
       setMessages(prev => [...prev, { role: 'user', content: question }]);
     }
+
+    // 创建 AbortController
+    const abortController = new AbortController();
+    abortControllerRef.current = abortController;
 
     setIsInterpreting(true);
     setUserQuestion('');
@@ -94,7 +99,8 @@ export function QiMenDemo({ isSettingsOpen, onSettingsClose }: QiMenDemoProps) {
               return newMessages;
             });
           },
-          model || undefined
+          model || undefined,
+          abortController.signal // 传递 signal
         );
       } else {
         await interpretWithOpenAI(
@@ -111,14 +117,28 @@ export function QiMenDemo({ isSettingsOpen, onSettingsClose }: QiMenDemoProps) {
               return newMessages;
             });
           },
-          model || undefined
+          model || undefined,
+          abortController.signal // 传递 signal
         );
       }
     } catch (error) {
-      alert(error instanceof Error ? error.message : 'AI解读失败');
-      setMessages(prev => prev.slice(0, -1));
+      // 如果是用户主动取消，不显示错误
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.log('用户取消了AI解读');
+      } else {
+        alert(error instanceof Error ? error.message : 'AI解读失败');
+        setMessages(prev => prev.slice(0, -1));
+      }
     } finally {
       setIsInterpreting(false);
+      abortControllerRef.current = null;
+    }
+  };
+
+  const handleStopInterpret = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
     }
   };
 
@@ -220,13 +240,17 @@ export function QiMenDemo({ isSettingsOpen, onSettingsClose }: QiMenDemoProps) {
               disabled={isInterpreting}
             />
             <motion.button
-              onClick={handleInterpret}
-              disabled={isInterpreting}
-              className="px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap text-sm sm:text-base"
+              onClick={isInterpreting ? handleStopInterpret : handleInterpret}
+              disabled={false}
+              className={`px-4 sm:px-6 py-2.5 sm:py-3 ${
+                isInterpreting
+                  ? 'bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700'
+                  : 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700'
+              } text-white rounded-lg font-medium transition-colors whitespace-nowrap text-sm sm:text-base`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {isInterpreting ? '解读中...' : messages.length === 0 ? '🔮 获取解读' : '💬 发送'}
+              {isInterpreting ? '⏹️ 停止生成' : messages.length === 0 ? '🔮 获取解读' : '💬 发送'}
             </motion.button>
           </div>
         </motion.div>
@@ -236,7 +260,7 @@ export function QiMenDemo({ isSettingsOpen, onSettingsClose }: QiMenDemoProps) {
 }
 
 // 奇门遁甲盘显示组件
-function QiMenPanDisplay({ pan }: { pan: QiMenPan }) {
+function QiMenPanDisplay({ pan }: { pan: QiMenResult }) {
   return (
     <motion.div
       className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
@@ -254,13 +278,21 @@ function QiMenPanDisplay({ pan }: { pan: QiMenPan }) {
       </motion.h3>
 
       <div className="text-center mb-6 text-gray-300">
-        <p>起局时间：{pan.year}年{pan.month}月{pan.day}日 {pan.hour}时</p>
-        <p>值符：{pan.zhiFu} | 值使：{pan.zhiShi} | 旬首：{pan.xunShou}</p>
+        <p>起局时间：{pan.basicInfo.date}</p>
+        <p>农历：{pan.basicInfo.lunarDate}</p>
+        <p>局数：{pan.juShu.fullName}</p>
+        <p>值符：{pan.zhiFuXing}（{pan.zhiFuGong}宫） | 值使：{pan.zhiShiMen}（{pan.zhiShiGong}宫） | 旬首：{pan.xunShou}</p>
       </div>
 
       <div className="grid grid-cols-3 gap-2 max-w-4xl mx-auto">
-        {pan.gongList.map((gongInfo, index) => (
-          <GongCell key={index} gongInfo={gongInfo} delay={index * 0.05} />
+        {Object.entries(pan.jiuGongAnalysis).map(([gongNum, gongAnalysis]: [string, any], index: number) => (
+          <GongCell
+            key={gongNum}
+            gongInfo={gongAnalysis}
+            tianGan={pan.tianPan[gongNum]}
+            diGan={pan.diPan[gongNum]}
+            delay={index * 0.05}
+          />
         ))}
       </div>
     </motion.div>
@@ -268,7 +300,7 @@ function QiMenPanDisplay({ pan }: { pan: QiMenPan }) {
 }
 
 // 宫位单元格组件
-function GongCell({ gongInfo, delay }: { gongInfo: GongInfo; delay: number }) {
+function GongCell({ gongInfo, tianGan, diGan, delay }: { gongInfo: any; tianGan?: string; diGan?: string; delay: number }) {
   return (
     <motion.div
       className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 backdrop-blur-sm rounded-lg p-3 border border-amber-500/30 min-h-[120px]"
@@ -278,14 +310,19 @@ function GongCell({ gongInfo, delay }: { gongInfo: GongInfo; delay: number }) {
     >
       <div className="text-center space-y-1">
         <div className="text-amber-300 font-bold text-sm mb-2">
-          {GONG_NAMES[gongInfo.gong]}
+          {gongInfo.gongName}
         </div>
         <div className="text-xs text-gray-300 space-y-0.5">
-          <div>天干: {gongInfo.tianGan}</div>
-          <div>地支: {gongInfo.diZhi}</div>
-          <div className="text-purple-300">{gongInfo.baMen}</div>
-          <div className="text-blue-300">{gongInfo.jiuXing}</div>
-          <div className="text-pink-300">{gongInfo.baShen}</div>
+          {tianGan && <div>天盘: {tianGan}</div>}
+          {diGan && <div>地盘: {diGan}</div>}
+          <div className="text-purple-300">{gongInfo.men || gongInfo.baMen}</div>
+          <div className="text-blue-300">{gongInfo.xing || gongInfo.jiuXing}</div>
+          <div className="text-pink-300">{gongInfo.shen || gongInfo.baShen}</div>
+
+          {/* 显示吉凶 */}
+          {gongInfo.jiXiongText && (
+            <div className="text-yellow-300">吉凶: {gongInfo.jiXiongText}</div>
+          )}
 
           {/* 显示击刑、入墓等判断结果 */}
           <div className="mt-2 pt-2 border-t border-amber-500/20 space-y-0.5">

@@ -9,13 +9,15 @@
  * @param baseURL 自定义API端点（可选）
  * @param onChunk 流式输出回调函数
  * @param model 模型名称（可选）
+ * @param signal AbortSignal用于取消请求（可选）
  */
 export async function interpretWithClaude(
   prompt: string,
   apiKey: string,
   baseURL?: string,
   onChunk?: (text: string) => void,
-  model?: string
+  model?: string,
+  signal?: AbortSignal
 ): Promise<string> {
   if (!apiKey) {
     throw new Error('请提供Claude API密钥');
@@ -25,7 +27,7 @@ export async function interpretWithClaude(
 
   // 如果提供了自定义baseURL，使用fetch直接调用（适用于第三方代理）
   if (baseURL) {
-    return interpretWithClaudeProxy(prompt, apiKey, baseURL, onChunk, finalModel);
+    return interpretWithClaudeProxy(prompt, apiKey, baseURL, onChunk, finalModel, signal);
   }
 
   // 官方SDK需要在服务端使用，浏览器环境请提供baseURL
@@ -40,7 +42,8 @@ async function interpretWithClaudeProxy(
   apiKey: string,
   baseURL: string,
   onChunk?: (text: string) => void,
-  model?: string
+  model?: string,
+  signal?: AbortSignal
 ): Promise<string> {
   try {
     let fullResponse = '';
@@ -64,7 +67,8 @@ async function interpretWithClaudeProxy(
           }
         ],
         stream: true
-      })
+      }),
+      signal // 添加 signal 支持取消请求
     });
 
     if (!response.ok) {
@@ -108,6 +112,10 @@ async function interpretWithClaudeProxy(
 
     return fullResponse;
   } catch (error) {
+    // 如果是用户主动取消，直接抛出原始错误
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw error;
+    }
     console.error('AI解读失败:', error);
     throw new Error('AI解读失败，请检查API密钥、URL或网络连接');
   }
@@ -120,13 +128,15 @@ async function interpretWithClaudeProxy(
  * @param baseURL 自定义API端点
  * @param onChunk 流式输出回调函数
  * @param model 模型名称（可选）
+ * @param signal AbortSignal用于取消请求（可选）
  */
 export async function interpretWithOpenAI(
   prompt: string,
   apiKey: string,
   baseURL: string,
   onChunk?: (text: string) => void,
-  model?: string
+  model?: string,
+  signal?: AbortSignal
 ): Promise<string> {
   if (!apiKey) {
     throw new Error('请提供OpenAI API密钥');
@@ -156,7 +166,8 @@ export async function interpretWithOpenAI(
           }
         ],
         stream: true
-      })
+      }),
+      signal // 添加 signal 支持取消请求
     });
 
     if (!response.ok) {
@@ -200,6 +211,10 @@ export async function interpretWithOpenAI(
 
     return fullResponse;
   } catch (error) {
+    // 如果是用户主动取消，直接抛出原始错误
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw error;
+    }
     console.error('AI解读失败:', error);
     throw new Error('AI解读失败，请检查API密钥、URL或网络连接');
   }

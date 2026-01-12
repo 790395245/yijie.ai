@@ -9,7 +9,8 @@ export * from './types';
 export * from './constants';
 
 // 导出起局函数
-export { timeQiJu } from './qiju';
+export { calculate } from './qiju';
+export type { QiMenResult, JuShuInfo, GongAnalysis, OverallAnalysis } from './qiju';
 
 // 导出解析函数
 export { parseQiMenPan } from './parser';
