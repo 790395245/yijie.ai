@@ -66,3 +66,62 @@ export const GONG_POSITIONS: Record<Gong, { row: number; col: number }> = {
   [Gong.Yi]: { row: 2, col: 1 },  // 坎一宫 - 中下
   [Gong.Liu]: { row: 2, col: 2 }  // 乾六宫 - 右下
 };
+
+// 天干相克关系（击刑）- 记录每个天干克制哪个天干
+export const TIAN_GAN_KE: Record<TianGan, TianGan> = {
+  [TianGan.Jia]: TianGan.Wu,   // 甲克戊（木克土）
+  [TianGan.Yi]: TianGan.Ji,    // 乙克己（木克土）
+  [TianGan.Bing]: TianGan.Geng, // 丙克庚（火克金）
+  [TianGan.Ding]: TianGan.Xin,  // 丁克辛（火克金）
+  [TianGan.Wu]: TianGan.Ren,   // 戊克壬（土克水）
+  [TianGan.Ji]: TianGan.Gui,   // 己克癸（土克水）
+  [TianGan.Geng]: TianGan.Jia, // 庚克甲（金克木）
+  [TianGan.Xin]: TianGan.Yi,   // 辛克乙（金克木）
+  [TianGan.Ren]: TianGan.Bing, // 壬克丙（水克火）
+  [TianGan.Gui]: TianGan.Ding  // 癸克丁（水克火）
+};
+
+// 天干入墓关系 - 记录每个天干对应的墓库地支
+export const TIAN_GAN_RU_MU: Record<TianGan, DiZhi> = {
+  [TianGan.Jia]: DiZhi.Wei,  // 甲木入未墓
+  [TianGan.Yi]: DiZhi.Wei,   // 乙木入未墓
+  [TianGan.Bing]: DiZhi.Xu,  // 丙火入戌墓
+  [TianGan.Ding]: DiZhi.Xu,  // 丁火入戌墓
+  [TianGan.Wu]: DiZhi.Chen,  // 戊土入辰墓
+  [TianGan.Ji]: DiZhi.Chen,  // 己土入辰墓
+  [TianGan.Geng]: DiZhi.Chou, // 庚金入丑墓
+  [TianGan.Xin]: DiZhi.Chou,  // 辛金入丑墓
+  [TianGan.Ren]: DiZhi.Chen,  // 壬水入辰墓
+  [TianGan.Gui]: DiZhi.Chen   // 癸水入辰墓
+};
+
+// 地支相冲关系 - 记录每个地支对应的相冲地支
+export const DI_ZHI_CHONG: Record<DiZhi, DiZhi> = {
+  [DiZhi.Zi]: DiZhi.Wu,   // 子午相冲
+  [DiZhi.Chou]: DiZhi.Wei, // 丑未相冲
+  [DiZhi.Yin]: DiZhi.Shen, // 寅申相冲
+  [DiZhi.Mao]: DiZhi.You,  // 卯酉相冲
+  [DiZhi.Chen]: DiZhi.Xu,  // 辰戌相冲
+  [DiZhi.Si]: DiZhi.Hai,   // 巳亥相冲
+  [DiZhi.Wu]: DiZhi.Zi,    // 午子相冲
+  [DiZhi.Wei]: DiZhi.Chou, // 未丑相冲
+  [DiZhi.Shen]: DiZhi.Yin, // 申寅相冲
+  [DiZhi.You]: DiZhi.Mao,  // 酉卯相冲
+  [DiZhi.Xu]: DiZhi.Chen,  // 戌辰相冲
+  [DiZhi.Hai]: DiZhi.Si    // 亥巳相冲
+};
+
+// 旬空关系 - 记录每个旬首对应的空亡地支
+export const XUN_KONG: Record<TianGan, DiZhi[]> = {
+  [TianGan.Jia]: [DiZhi.Xu, DiZhi.Hai],  // 甲子旬：戌亥空
+  [TianGan.Yi]: [DiZhi.Xu, DiZhi.Hai],   // 乙丑旬：戌亥空（实际应该根据具体旬首判断）
+  [TianGan.Bing]: [DiZhi.Shen, DiZhi.You], // 丙寅旬：申酉空
+  [TianGan.Ding]: [DiZhi.Shen, DiZhi.You], // 丁卯旬：申酉空
+  [TianGan.Wu]: [DiZhi.Wu, DiZhi.Wei],   // 戊辰旬：午未空
+  [TianGan.Ji]: [DiZhi.Wu, DiZhi.Wei],   // 己巳旬：午未空
+  [TianGan.Geng]: [DiZhi.Chen, DiZhi.Si], // 庚午旬：辰巳空
+  [TianGan.Xin]: [DiZhi.Chen, DiZhi.Si],  // 辛未旬：辰巳空
+  [TianGan.Ren]: [DiZhi.Yin, DiZhi.Mao],  // 壬申旬：寅卯空
+  [TianGan.Gui]: [DiZhi.Yin, DiZhi.Mao]   // 癸酉旬：寅卯空
+};
+

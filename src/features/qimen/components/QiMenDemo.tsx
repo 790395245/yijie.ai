@@ -286,6 +286,25 @@ function GongCell({ gongInfo, delay }: { gongInfo: GongInfo; delay: number }) {
           <div className="text-purple-300">{gongInfo.baMen}</div>
           <div className="text-blue-300">{gongInfo.jiuXing}</div>
           <div className="text-pink-300">{gongInfo.baShen}</div>
+
+          {/* 显示击刑、入墓等判断结果 */}
+          <div className="mt-2 pt-2 border-t border-amber-500/20 space-y-0.5">
+            {gongInfo.jiXing && (
+              <div className="text-red-400">⚔️ 击刑: {gongInfo.jiXing}</div>
+            )}
+            {gongInfo.ruMu && (
+              <div className="text-gray-400">💀 入墓</div>
+            )}
+            {gongInfo.fuYin && (
+              <div className="text-yellow-400">🔄 伏吟</div>
+            )}
+            {gongInfo.fanYin && (
+              <div className="text-orange-400">↔️ 反吟</div>
+            )}
+            {gongInfo.kongWang && (
+              <div className="text-blue-400">⭕ 空亡</div>
+            )}
+          </div>
         </div>
       </div>
     </motion.div>

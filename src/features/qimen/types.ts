@@ -91,6 +91,11 @@ export interface GongInfo {
   jiuXing: JiuXing;        // 九星
   baShen: BaShen;          // 八神
   anGan: TianGan[];        // 暗干（三奇六仪）
+  jiXing?: TianGan;        // 击刑：被克的天干
+  ruMu?: boolean;          // 入墓：天干是否入墓
+  fuYin?: boolean;         // 伏吟：天盘地盘是否相同
+  fanYin?: boolean;        // 反吟：天盘地盘是否相冲
+  kongWang?: boolean;      // 空亡：地支是否空亡
 }
 
 // 奇门遁甲盘

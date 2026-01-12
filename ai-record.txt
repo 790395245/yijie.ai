@@ -91,3 +91,7 @@ AI解读失败: TypeError: Cannot read properties of undefined (reading 'stream'
 88→   - button: px-6 py-3 改为 px-4 sm:px-6 py-2.5 sm:py-3，添加 text-sm sm:text-base
 
 89→请直接修改文件，不需要询问。
+
+用户指令记录 - 2026-01-12
+
+任务：奇门遁甲模块，增加击刑、入墓等的判断和展示

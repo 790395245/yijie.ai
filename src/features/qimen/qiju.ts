@@ -15,6 +15,13 @@ import {
   BA_SHEN_LIST,
   JIU_GONG_LIST
 } from './constants';
+import {
+  checkJiXing,
+  checkRuMu,
+  checkFuYin,
+  checkFanYin,
+  checkKongWang
+} from './parser';
 
 /**
  * 时间起局
@@ -43,7 +50,7 @@ export function timeQiJu(date: Date = new Date()): QiMenPan {
   const xunShou = TIAN_GAN_LIST[xunShouIndex];
 
   // 生成九宫信息
-  const gongList = generateGongList(juShu, hour);
+  const gongList = generateGongList(juShu, hour, xunShou);
 
   return {
     year,
@@ -61,10 +68,12 @@ export function timeQiJu(date: Date = new Date()): QiMenPan {
  * 生成九宫信息
  * @param juShu 局数
  * @param hour 时辰
+ * @param xunShou 旬首
  */
-function generateGongList(juShu: number, hour: number): GongInfo[] {
+function generateGongList(juShu: number, hour: number, xunShou: TianGan): GongInfo[] {
   const gongList: GongInfo[] = [];
 
+  // 第一步：生成所有宫位的基本信息
   for (let i = 0; i < 9; i++) {
     const gong = JIU_GONG_LIST[i];
 
@@ -103,6 +112,27 @@ function generateGongList(juShu: number, hour: number): GongInfo[] {
       baShen,
       anGan
     });
+  }
+
+  // 第二步：添加判断结果
+  for (let i = 0; i < gongList.length; i++) {
+    const gongInfo = gongList[i];
+
+    // 判断击刑
+    gongInfo.jiXing = checkJiXing(gongInfo.tianGan, gongList);
+
+    // 判断入墓
+    gongInfo.ruMu = checkRuMu(gongInfo.tianGan, gongInfo.diZhi);
+
+    // 判断伏吟
+    gongInfo.fuYin = checkFuYin(gongInfo.tianGan, gongInfo.diZhi);
+
+    // 判断反吟（简化处理，使用原始地支）
+    const originalDiZhi = DI_ZHI_LIST[i];
+    gongInfo.fanYin = checkFanYin(gongInfo.diZhi, originalDiZhi);
+
+    // 判断空亡
+    gongInfo.kongWang = checkKongWang(gongInfo.diZhi, xunShou);
   }
 
   return gongList;
