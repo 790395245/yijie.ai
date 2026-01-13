@@ -402,29 +402,29 @@ ${panText}
       {/* 符号解读弹窗 */}
       {selectedSymbol && (
         <motion.div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={() => setSelectedSymbol(null)}
         >
           <motion.div
-            className="bg-gradient-to-br from-amber-900/90 to-orange-900/90 backdrop-blur-md rounded-xl p-6 border border-amber-500/50 max-w-md w-full"
+            className="bg-gradient-to-br from-amber-900/90 to-orange-900/90 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-amber-500/50 max-w-md w-full"
             initial={{ scale: 0.9, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.9, y: 20 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-2xl font-bold text-amber-300">{selectedSymbol.name}</h3>
+            <div className="flex justify-between items-center mb-3 sm:mb-4">
+              <h3 className="text-xl sm:text-2xl font-bold text-amber-300">{selectedSymbol.name}</h3>
               <button
                 onClick={() => setSelectedSymbol(null)}
-                className="text-gray-400 hover:text-white transition-colors"
+                className="text-gray-400 hover:text-white transition-colors text-xl sm:text-2xl"
               >
                 ✕
               </button>
             </div>
-            <div className="text-gray-200 leading-relaxed">
+            <div className="text-gray-200 leading-relaxed text-sm sm:text-base">
               {selectedSymbol.description}
             </div>
           </motion.div>
@@ -545,19 +545,19 @@ function QiMenPanDisplay({ pan, animationStage, stageProgress, onSymbolClick }: 
     const baGuaNames = ['巽', '离', '坤', '震', '中', '兑', '艮', '坎', '乾'];
     return (
       <motion.div
-        className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+        className="bg-white/5 backdrop-blur-sm rounded-xl p-3 sm:p-6 border border-white/10"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
         <motion.h3
-          className="text-2xl font-bold text-white mb-6 text-center"
+          className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 text-center"
           initial={{ y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
         >
           奇门遁甲盘
         </motion.h3>
-        <div className="grid grid-cols-3 gap-2 max-w-4xl mx-auto">
+        <div className="grid grid-cols-3 gap-1 sm:gap-2 max-w-4xl mx-auto">
           {gongOrder.map((gongNum, index) => {
             const gongKey = String(gongNum);
             const gongAnalysis = pan.jiuGongAnalysis[gongKey];
@@ -587,19 +587,19 @@ function QiMenPanDisplay({ pan, animationStage, stageProgress, onSymbolClick }: 
 
   return (
     <motion.div
-      className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+      className="bg-white/5 backdrop-blur-sm rounded-xl p-3 sm:p-6 border border-white/10"
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
     >
       <motion.h3
-        className="text-2xl font-bold text-white mb-4 text-center"
+        className="text-xl sm:text-2xl font-bold text-white mb-3 sm:mb-4 text-center"
       >
         奇门遁甲盘
       </motion.h3>
 
       {/* complete阶段：显示完整信息 */}
       {animationStage === 'complete' && (
-        <div className="text-center mb-6 text-gray-300 space-y-2">
+        <div className="text-center mb-4 sm:mb-6 text-gray-300 space-y-1 sm:space-y-2 text-xs sm:text-base">
           <p>起局时间：{pan.basicInfo.date}</p>
           <p>农历：{pan.basicInfo.lunarDate}</p>
           <p className="text-amber-300 font-semibold">
@@ -610,7 +610,7 @@ function QiMenPanDisplay({ pan, animationStage, stageProgress, onSymbolClick }: 
         </div>
       )}
 
-      <div className="grid grid-cols-3 gap-2 max-w-4xl mx-auto">
+      <div className="grid grid-cols-3 gap-1 sm:gap-2 max-w-4xl mx-auto">
         {gongOrder.map((gongNum, index) => {
           const gongKey = String(gongNum);
           const gongAnalysis = pan.jiuGongAnalysis[gongKey];
@@ -687,13 +687,13 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
 
   return (
     <motion.div
-      className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 backdrop-blur-sm rounded-lg p-4 border border-amber-500/30 min-h-[220px] relative"
+      className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 backdrop-blur-sm rounded-lg p-2 sm:p-4 border border-amber-500/30 min-h-[180px] sm:min-h-[220px] relative"
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
       {/* 顶部：宫位名称（八卦）和特殊标识 */}
-      <div className="flex items-center justify-between text-amber-300 font-bold text-xl mb-3 border-b border-amber-500/20 pb-2">
+      <div className="flex items-center justify-between text-amber-300 font-bold text-lg sm:text-xl mb-2 sm:mb-3 border-b border-amber-500/20 pb-1 sm:pb-2">
         {/* 左侧：八卦名称 */}
         <div className="flex-1 text-center">
           {showBaGua ? (
@@ -715,10 +715,10 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
 
         {/* 右侧：特殊标识（空亡和马星） */}
         {showSpecialMarks && (
-          <div className="flex gap-1">
+          <div className="flex gap-0.5 sm:gap-1">
             {(gongInfo.kongWang || isKongWang) && (
               <motion.span
-                className="text-sm px-2 py-0.5 bg-blue-500/30 text-blue-200 rounded border border-blue-400/50 font-semibold"
+                className="text-xs sm:text-sm px-1 sm:px-2 py-0.5 bg-blue-500/30 text-blue-200 rounded border border-blue-400/50 font-semibold"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -728,7 +728,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
             )}
             {isMaStar && (
               <motion.span
-                className="text-sm px-2 py-0.5 bg-green-500/30 text-green-200 rounded border border-green-400/50 font-semibold"
+                className="text-xs sm:text-sm px-1 sm:px-2 py-0.5 bg-green-500/30 text-green-200 rounded border border-green-400/50 font-semibold"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -741,13 +741,13 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
       </div>
 
       {/* 主体区域：使用网格布局 */}
-      <div className="grid grid-cols-2 gap-1 mb-3">
+      <div className="grid grid-cols-2 gap-1 mb-2 sm:mb-3">
         {/* 左上：天盘干支 */}
         <div className="text-left">
-          <div className="text-sm text-gray-400">天盘</div>
+          <div className="text-xs sm:text-sm text-gray-400">天盘</div>
           {showTianGan && tianGan ? (
             <motion.div
-              className="text-2xl text-cyan-300 font-semibold"
+              className="text-xl sm:text-2xl text-cyan-300 font-semibold"
               initial={{ scale: 2, opacity: 0, rotate: 360 }}
               animate={{ scale: 1, opacity: 1, rotate: 0 }}
               transition={{ duration: 0.5 }}
@@ -755,16 +755,16 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {tianGan}
             </motion.div>
           ) : (
-            <div className="text-2xl text-gray-600">-</div>
+            <div className="text-xl sm:text-2xl text-gray-600">-</div>
           )}
         </div>
 
         {/* 右上：八神 */}
         <div className="text-right">
-          <div className="text-sm text-gray-400">八神</div>
+          <div className="text-xs sm:text-sm text-gray-400">八神</div>
           {showBaShen && (gongInfo.shen || gongInfo.baShen) ? (
             <motion.div
-              className="text-2xl text-pink-300 font-semibold cursor-pointer hover:text-pink-200 hover:scale-110 transition-all"
+              className="text-xl sm:text-2xl text-pink-300 font-semibold cursor-pointer hover:text-pink-200 hover:scale-110 transition-all"
               onClick={() => handleSymbolClick('baShen', gongInfo.shen || gongInfo.baShen)}
               initial={{ scale: 3, y: -50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -773,16 +773,16 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {gongInfo.shen || gongInfo.baShen}
             </motion.div>
           ) : (
-            <div className="text-2xl text-gray-600">-</div>
+            <div className="text-xl sm:text-2xl text-gray-600">-</div>
           )}
         </div>
 
         {/* 左下：八门 */}
         <div className="text-left">
-          <div className="text-sm text-gray-400">八门</div>
+          <div className="text-xs sm:text-sm text-gray-400">八门</div>
           {showBaMen && (gongInfo.men || gongInfo.baMen) ? (
             <motion.div
-              className="text-2xl text-purple-300 font-semibold cursor-pointer hover:text-purple-200 hover:scale-110 transition-all"
+              className="text-xl sm:text-2xl text-purple-300 font-semibold cursor-pointer hover:text-purple-200 hover:scale-110 transition-all"
               onClick={() => handleSymbolClick('baMen', gongInfo.men || gongInfo.baMen)}
               initial={{ scale: 3, y: -50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -791,16 +791,16 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {gongInfo.men || gongInfo.baMen}
             </motion.div>
           ) : (
-            <div className="text-2xl text-gray-600">-</div>
+            <div className="text-xl sm:text-2xl text-gray-600">-</div>
           )}
         </div>
 
         {/* 右下：九星 */}
         <div className="text-right">
-          <div className="text-sm text-gray-400">九星</div>
+          <div className="text-xs sm:text-sm text-gray-400">九星</div>
           {showJiuXing && (gongInfo.xing || gongInfo.jiuXing) ? (
             <motion.div
-              className="text-2xl text-blue-300 font-semibold cursor-pointer hover:text-blue-200 hover:scale-110 transition-all"
+              className="text-xl sm:text-2xl text-blue-300 font-semibold cursor-pointer hover:text-blue-200 hover:scale-110 transition-all"
               onClick={() => handleSymbolClick('jiuXing', gongInfo.xing || gongInfo.jiuXing)}
               initial={{ y: -100, scale: 2, opacity: 0 }}
               animate={{ y: 0, scale: 1, opacity: 1 }}
@@ -809,17 +809,17 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {gongInfo.xing || gongInfo.jiuXing}
             </motion.div>
           ) : (
-            <div className="text-2xl text-gray-600">-</div>
+            <div className="text-xl sm:text-2xl text-gray-600">-</div>
           )}
         </div>
       </div>
 
       {/* 底部：地盘干支 */}
-      <div className="text-center border-t border-amber-500/20 pt-2 mb-2">
-        <div className="text-sm text-gray-400">地盘</div>
+      <div className="text-center border-t border-amber-500/20 pt-1 sm:pt-2 mb-1 sm:mb-2">
+        <div className="text-xs sm:text-sm text-gray-400">地盘</div>
         {showDiGan && diGan ? (
           <motion.div
-            className="text-2xl text-orange-300 font-semibold"
+            className="text-xl sm:text-2xl text-orange-300 font-semibold"
             initial={{ y: -80, scale: 1.5, rotate: 180, opacity: 0 }}
             animate={{ y: 0, scale: 1, rotate: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", stiffness: 150 }}
@@ -827,30 +827,30 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
             {diGan}
           </motion.div>
         ) : (
-          <div className="text-2xl text-gray-600">-</div>
+          <div className="text-xl sm:text-2xl text-gray-600">-</div>
         )}
       </div>
 
       {/* 状态标签区域 - 在stage11和complete阶段显示（仅显示击刑、入墓、伏吟、反吟） */}
       {showSpecialMarks && (gongInfo.jiXing || gongInfo.ruMu || gongInfo.fuYin || gongInfo.fanYin) && (
-        <div className="flex flex-wrap gap-1 justify-center">
+        <div className="flex flex-wrap gap-0.5 sm:gap-1 justify-center">
           {gongInfo.jiXing && (
-            <span className="text-[10px] px-1.5 py-0.5 bg-red-500/20 text-red-300 rounded border border-red-500/30">
+            <span className="text-[9px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 bg-red-500/20 text-red-300 rounded border border-red-500/30">
               击刑
             </span>
           )}
           {gongInfo.ruMu && (
-            <span className="text-[10px] px-1.5 py-0.5 bg-gray-500/20 text-gray-300 rounded border border-gray-500/30">
+            <span className="text-[9px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 bg-gray-500/20 text-gray-300 rounded border border-gray-500/30">
               入墓
             </span>
           )}
           {gongInfo.fuYin && (
-            <span className="text-[10px] px-1.5 py-0.5 bg-yellow-500/20 text-yellow-300 rounded border border-yellow-500/30">
+            <span className="text-[9px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 bg-yellow-500/20 text-yellow-300 rounded border border-yellow-500/30">
               伏吟
             </span>
           )}
           {gongInfo.fanYin && (
-            <span className="text-[10px] px-1.5 py-0.5 bg-orange-500/20 text-orange-300 rounded border border-orange-500/30">
+            <span className="text-[9px] sm:text-[10px] px-1 sm:px-1.5 py-0.5 bg-orange-500/20 text-orange-300 rounded border border-orange-500/30">
               反吟
             </span>
           )}
