@@ -12,10 +12,12 @@ interface SettingsPanelProps {
   apiKey: string;
   apiType: 'openai' | 'claude';
   model: string;
+  enableAnimation: boolean;
   onApiUrlChange: (url: string) => void;
   onApiKeyChange: (key: string) => void;
   onApiTypeChange: (type: 'openai' | 'claude') => void;
   onModelChange: (model: string) => void;
+  onEnableAnimationChange: (enabled: boolean) => void;
 }
 
 export function SettingsPanel({
@@ -25,16 +27,19 @@ export function SettingsPanel({
   apiKey,
   apiType,
   model,
+  enableAnimation,
   onApiUrlChange,
   onApiKeyChange,
   onApiTypeChange,
-  onModelChange
+  onModelChange,
+  onEnableAnimationChange
 }: SettingsPanelProps) {
   // 临时状态，用于编辑
   const [tempApiUrl, setTempApiUrl] = useState(apiUrl);
   const [tempApiKey, setTempApiKey] = useState(apiKey);
   const [tempApiType, setTempApiType] = useState(apiType);
   const [tempModel, setTempModel] = useState(model);
+  const [tempEnableAnimation, setTempEnableAnimation] = useState(enableAnimation);
 
   // 当弹窗打开时，同步父组件的值到临时状态
   useEffect(() => {
@@ -43,8 +48,9 @@ export function SettingsPanel({
       setTempApiKey(apiKey);
       setTempApiType(apiType);
       setTempModel(model);
+      setTempEnableAnimation(enableAnimation);
     }
-  }, [isOpen, apiUrl, apiKey, apiType, model]);
+  }, [isOpen, apiUrl, apiKey, apiType, model, enableAnimation]);
 
   // 保存设置
   const handleSave = () => {
@@ -52,6 +58,7 @@ export function SettingsPanel({
     onApiKeyChange(tempApiKey);
     onApiTypeChange(tempApiType);
     onModelChange(tempModel);
+    onEnableAnimationChange(tempEnableAnimation);
     onClose();
   };
 
@@ -161,6 +168,31 @@ export function SettingsPanel({
                       className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-purple-400"
                     />
                     <p className="text-xs text-gray-400 mt-1">可选，留空使用默认模型</p>
+                  </div>
+                </div>
+
+                {/* 显示设置 */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-white">显示设置</h3>
+
+                  {/* 动画开关 */}
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <label className="block text-sm text-gray-300">启用动画</label>
+                      <p className="text-xs text-gray-400 mt-1">关闭后排盘将直接显示结果</p>
+                    </div>
+                    <button
+                      onClick={() => setTempEnableAnimation(!tempEnableAnimation)}
+                      className={`relative w-14 h-7 rounded-full transition-colors ${
+                        tempEnableAnimation ? 'bg-purple-600' : 'bg-gray-600'
+                      }`}
+                    >
+                      <span
+                        className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full transition-transform ${
+                          tempEnableAnimation ? 'translate-x-7' : 'translate-x-0'
+                        }`}
+                      />
+                    </button>
                   </div>
                 </div>
 
