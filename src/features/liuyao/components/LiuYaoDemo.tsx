@@ -25,6 +25,7 @@ export function LiuYaoDemo({ isSettingsOpen, onSettingsClose }: LiuYaoDemoProps)
   const [messages, setMessages] = useState<Message[]>([]);
   const [userQuestion, setUserQuestion] = useState<string>('');
   const [isInterpreting, setIsInterpreting] = useState<boolean>(false);
+  const [enableAnimation] = useState<boolean>(true); // 六爻暂不支持动画
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // 自动滚动到对话框底部
@@ -164,10 +165,12 @@ export function LiuYaoDemo({ isSettingsOpen, onSettingsClose }: LiuYaoDemoProps)
         apiKey={apiKey}
         apiType={apiType}
         model={model}
+        enableAnimation={enableAnimation}
         onApiUrlChange={setApiUrl}
         onApiKeyChange={setApiKey}
         onApiTypeChange={setApiType}
         onModelChange={setModel}
+        onEnableAnimationChange={() => {}} // 六爻暂不支持动画
       />
 
       {result && (
@@ -215,8 +218,24 @@ export function LiuYaoDemo({ isSettingsOpen, onSettingsClose }: LiuYaoDemoProps)
                     {message.role === 'user' ? '👤 您' : '🤖 AI'}
                   </span>
                 </div>
-                <div className="text-gray-200 prose prose-invert prose-sm max-w-none text-sm sm:text-base">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <div className="text-gray-200 prose prose-invert prose-base max-w-none leading-relaxed">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      h1: ({node, ...props}) => <h1 className="text-2xl font-bold mt-6 mb-4 text-purple-300" {...props} />,
+                      h2: ({node, ...props}) => <h2 className="text-xl font-bold mt-5 mb-3 text-purple-300" {...props} />,
+                      h3: ({node, ...props}) => <h3 className="text-lg font-bold mt-4 mb-2 text-purple-300" {...props} />,
+                      p: ({node, ...props}) => <p className="mb-4 leading-relaxed" {...props} />,
+                      ul: ({node, ...props}) => <ul className="mb-4 ml-6 space-y-2" {...props} />,
+                      ol: ({node, ...props}) => <ol className="mb-4 ml-6 space-y-2" {...props} />,
+                      li: ({node, ...props}) => <li className="leading-relaxed" {...props} />,
+                      code: ({node, ...props}: any) =>
+                        props.inline
+                          ? <code className="bg-purple-900/50 px-1.5 py-0.5 rounded text-purple-200" {...props} />
+                          : <code className="block bg-purple-900/50 p-3 rounded my-3 overflow-x-auto" {...props} />,
+                      blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-purple-500 pl-4 italic my-4" {...props} />,
+                    }}
+                  >
                     {message.content}
                   </ReactMarkdown>
                 </div>

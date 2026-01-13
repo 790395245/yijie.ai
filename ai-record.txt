@@ -218,3 +218,15 @@ AI解读失败: TypeError: Cannot read properties of undefined (reading 'stream'
 用户指令记录 - 2026-01-13
 
 任务：帮我把标识标在所在宫的右上角，和宫的八卦名在同一行，字体大小放大些，并且不要因为其他符号的布局。完成后推送git
+
+用户指令记录 - 2026-01-13
+
+任务：build一下看看有报错吗
+
+用户指令记录 - 2026-01-13
+
+任务：修复build报错 - SettingsPanelProps缺少enableAnimation属性
+
+用户指令记录 - 2026-01-13
+
+任务：修复Edge One部署时的TypeScript类型错误，SettingsPanel组件缺少enableAnimation属性
