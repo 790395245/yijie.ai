@@ -27,3 +27,8 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+.env.development
+.env.production
+
+# 只提交示例配置文件
+!.env.example
