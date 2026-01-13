@@ -687,13 +687,13 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
 
   return (
     <motion.div
-      className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 backdrop-blur-sm rounded-lg p-2 sm:p-4 border border-amber-500/30 min-h-[180px] sm:min-h-[220px] relative"
+      className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 backdrop-blur-sm rounded-lg p-1.5 sm:p-4 border border-amber-500/30 min-h-[130px] sm:min-h-[220px] relative"
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
       {/* 顶部：宫位名称（八卦）和特殊标识 */}
-      <div className="flex items-center justify-between text-amber-300 font-bold text-lg sm:text-xl mb-2 sm:mb-3 border-b border-amber-500/20 pb-1 sm:pb-2">
+      <div className="flex items-center justify-between text-amber-300 font-bold text-base sm:text-xl mb-1 sm:mb-3 border-b border-amber-500/20 pb-0.5 sm:pb-2">
         {/* 左侧：八卦名称 */}
         <div className="flex-1 text-center">
           {showBaGua ? (
@@ -718,7 +718,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
           <div className="flex gap-0.5 sm:gap-1">
             {(gongInfo.kongWang || isKongWang) && (
               <motion.span
-                className="text-xs sm:text-sm px-1 sm:px-2 py-0.5 bg-blue-500/30 text-blue-200 rounded border border-blue-400/50 font-semibold"
+                className="text-[10px] sm:text-sm px-0.5 sm:px-2 py-0.5 bg-blue-500/30 text-blue-200 rounded border border-blue-400/50 font-semibold"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
@@ -728,7 +728,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
             )}
             {isMaStar && (
               <motion.span
-                className="text-xs sm:text-sm px-1 sm:px-2 py-0.5 bg-green-500/30 text-green-200 rounded border border-green-400/50 font-semibold"
+                className="text-[10px] sm:text-sm px-0.5 sm:px-2 py-0.5 bg-green-500/30 text-green-200 rounded border border-green-400/50 font-semibold"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
@@ -741,13 +741,13 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
       </div>
 
       {/* 主体区域：使用网格布局 */}
-      <div className="grid grid-cols-2 gap-1 mb-2 sm:mb-3">
+      <div className="grid grid-cols-2 gap-0.5 sm:gap-1 mb-1 sm:mb-3">
         {/* 左上：天盘干支 */}
         <div className="text-left">
-          <div className="text-xs sm:text-sm text-gray-400">天盘</div>
+          <div className="text-[10px] sm:text-sm text-gray-400">天盘</div>
           {showTianGan && tianGan ? (
             <motion.div
-              className="text-xl sm:text-2xl text-cyan-300 font-semibold"
+              className="text-lg sm:text-2xl text-cyan-300 font-semibold"
               initial={{ scale: 2, opacity: 0, rotate: 360 }}
               animate={{ scale: 1, opacity: 1, rotate: 0 }}
               transition={{ duration: 0.5 }}
@@ -755,16 +755,16 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {tianGan}
             </motion.div>
           ) : (
-            <div className="text-xl sm:text-2xl text-gray-600">-</div>
+            <div className="text-lg sm:text-2xl text-gray-600">-</div>
           )}
         </div>
 
         {/* 右上：八神 */}
         <div className="text-right">
-          <div className="text-xs sm:text-sm text-gray-400">八神</div>
+          <div className="text-[10px] sm:text-sm text-gray-400">八神</div>
           {showBaShen && (gongInfo.shen || gongInfo.baShen) ? (
             <motion.div
-              className="text-xl sm:text-2xl text-pink-300 font-semibold cursor-pointer hover:text-pink-200 hover:scale-110 transition-all"
+              className="text-lg sm:text-2xl text-pink-300 font-semibold cursor-pointer hover:text-pink-200 hover:scale-110 transition-all"
               onClick={() => handleSymbolClick('baShen', gongInfo.shen || gongInfo.baShen)}
               initial={{ scale: 3, y: -50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -773,16 +773,16 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {gongInfo.shen || gongInfo.baShen}
             </motion.div>
           ) : (
-            <div className="text-xl sm:text-2xl text-gray-600">-</div>
+            <div className="text-lg sm:text-2xl text-gray-600">-</div>
           )}
         </div>
 
         {/* 左下：八门 */}
         <div className="text-left">
-          <div className="text-xs sm:text-sm text-gray-400">八门</div>
+          <div className="text-[10px] sm:text-sm text-gray-400">八门</div>
           {showBaMen && (gongInfo.men || gongInfo.baMen) ? (
             <motion.div
-              className="text-xl sm:text-2xl text-purple-300 font-semibold cursor-pointer hover:text-purple-200 hover:scale-110 transition-all"
+              className="text-lg sm:text-2xl text-purple-300 font-semibold cursor-pointer hover:text-purple-200 hover:scale-110 transition-all"
               onClick={() => handleSymbolClick('baMen', gongInfo.men || gongInfo.baMen)}
               initial={{ scale: 3, y: -50, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -791,16 +791,16 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {gongInfo.men || gongInfo.baMen}
             </motion.div>
           ) : (
-            <div className="text-xl sm:text-2xl text-gray-600">-</div>
+            <div className="text-lg sm:text-2xl text-gray-600">-</div>
           )}
         </div>
 
         {/* 右下：九星 */}
         <div className="text-right">
-          <div className="text-xs sm:text-sm text-gray-400">九星</div>
+          <div className="text-[10px] sm:text-sm text-gray-400">九星</div>
           {showJiuXing && (gongInfo.xing || gongInfo.jiuXing) ? (
             <motion.div
-              className="text-xl sm:text-2xl text-blue-300 font-semibold cursor-pointer hover:text-blue-200 hover:scale-110 transition-all"
+              className="text-lg sm:text-2xl text-blue-300 font-semibold cursor-pointer hover:text-blue-200 hover:scale-110 transition-all"
               onClick={() => handleSymbolClick('jiuXing', gongInfo.xing || gongInfo.jiuXing)}
               initial={{ y: -100, scale: 2, opacity: 0 }}
               animate={{ y: 0, scale: 1, opacity: 1 }}
@@ -809,17 +809,17 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
               {gongInfo.xing || gongInfo.jiuXing}
             </motion.div>
           ) : (
-            <div className="text-xl sm:text-2xl text-gray-600">-</div>
+            <div className="text-lg sm:text-2xl text-gray-600">-</div>
           )}
         </div>
       </div>
 
       {/* 底部：地盘干支 */}
-      <div className="text-center border-t border-amber-500/20 pt-1 sm:pt-2 mb-1 sm:mb-2">
-        <div className="text-xs sm:text-sm text-gray-400">地盘</div>
+      <div className="text-center border-t border-amber-500/20 pt-0.5 sm:pt-2 mb-0.5 sm:mb-2">
+        <div className="text-[10px] sm:text-sm text-gray-400">地盘</div>
         {showDiGan && diGan ? (
           <motion.div
-            className="text-xl sm:text-2xl text-orange-300 font-semibold"
+            className="text-lg sm:text-2xl text-orange-300 font-semibold"
             initial={{ y: -80, scale: 1.5, rotate: 180, opacity: 0 }}
             animate={{ y: 0, scale: 1, rotate: 0, opacity: 1 }}
             transition={{ duration: 0.6, type: "spring", stiffness: 150 }}
@@ -827,7 +827,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
             {diGan}
           </motion.div>
         ) : (
-          <div className="text-xl sm:text-2xl text-gray-600">-</div>
+          <div className="text-lg sm:text-2xl text-gray-600">-</div>
         )}
       </div>
 
