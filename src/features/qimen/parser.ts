@@ -107,10 +107,20 @@ function parseQiMenResult(result: QiMenResult): string {
   // 基本信息
   text += `起局时间：${result.basicInfo.date}\n`;
   text += `农历：${result.basicInfo.lunarDate}\n`;
+  text += `四柱：年柱${result.siZhu.year}、月柱${result.siZhu.month}、日柱${result.siZhu.day}、时柱${result.siZhu.time}\n`;
   text += `局数：${result.juShu.fullName}\n`;
   text += `值符：${result.zhiFuXing}（${result.zhiFuGong}宫）\n`;
   text += `值使：${result.zhiShiMen}（${result.zhiShiGong}宫）\n`;
-  text += `旬首：${result.xunShou}\n\n`;
+  text += `旬首：${result.xunShou}\n`;
+
+  // 添加空亡和马星信息
+  if (result.kongWangZhi && result.kongWangZhi.length > 0) {
+    text += `空亡：${result.kongWangZhi.join('、')}（对应${result.kongWangGong?.join('、')}宫）\n`;
+  }
+  if (result.maStar && result.maStar.zhi) {
+    text += `驿马：${result.maStar.zhi}（${result.maStar.gong}宫）\n`;
+  }
+  text += '\n';
 
   // 九宫信息
   text += '九宫布局：\n';
@@ -125,17 +135,29 @@ function parseQiMenResult(result: QiMenResult): string {
       text += `  八神：${gongAnalysis.shen}\n`;
       text += `  暗干：${result.anGan[i] || ''}\n`;
       text += `  吉凶：${gongAnalysis.jiXiongText}\n`;
+
+      // 添加特殊标识
+      const specialMarks = [];
+      if (result.kongWangGong?.includes(String(i))) {
+        specialMarks.push('空亡');
+      }
+      if (result.maStar?.gong === String(i)) {
+        specialMarks.push('驿马');
+      }
+      if (specialMarks.length > 0) {
+        text += `  特殊标识：${specialMarks.join('、')}\n`;
+      }
     }
   }
 
   // 综合分析
-  text += `\n【综合分析】\n`;
-  text += `总体吉凶：${result.analysis.overallJiXiongText}\n`;
-  text += `最佳方位：${result.analysis.bestGong ? result.jiuGongAnalysis[result.analysis.bestGong]?.direction : '无'}\n`;
-  text += `\n建议：\n`;
-  result.analysis.suggestions.forEach((suggestion, index) => {
-    text += `${index + 1}. ${suggestion}\n`;
-  });
+  // text += `\n【综合分析】\n`;
+  // text += `总体吉凶：${result.analysis.overallJiXiongText}\n`;
+  // text += `最佳方位：${result.analysis.bestGong ? result.jiuGongAnalysis[result.analysis.bestGong]?.direction : '无'}\n`;
+  // text += `\n建议：\n`;
+  // result.analysis.suggestions.forEach((suggestion, index) => {
+  //   text += `${index + 1}. ${suggestion}\n`;
+  // });
 
   return text;
 }
