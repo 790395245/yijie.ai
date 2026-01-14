@@ -687,7 +687,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
 
   return (
     <motion.div
-      className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 backdrop-blur-sm rounded-lg p-1.5 sm:p-4 border border-amber-500/30 min-h-[130px] sm:min-h-[220px] relative"
+      className="bg-gradient-to-br from-amber-900/30 to-orange-900/30 backdrop-blur-sm rounded-lg p-1.5 sm:p-4 border border-amber-500/30 aspect-square relative flex flex-col"
       initial={{ scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -741,9 +741,9 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
       </div>
 
       {/* 主体区域：使用网格布局 */}
-      <div className="grid grid-cols-2 gap-0.5 sm:gap-1 mb-1 sm:mb-3">
+      <div className="grid grid-cols-2 gap-0.5 sm:gap-1 mb-1 sm:mb-3 flex-1">
         {/* 左上：天盘干支 */}
-        <div className="text-left">
+        <div className="text-left flex flex-col justify-center">
           <div className="text-[10px] sm:text-sm text-gray-400">天盘</div>
           {showTianGan && tianGan ? (
             <motion.div
@@ -760,7 +760,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
         </div>
 
         {/* 右上：八神 */}
-        <div className="text-right">
+        <div className="text-right flex flex-col justify-center">
           <div className="text-[10px] sm:text-sm text-gray-400">八神</div>
           {showBaShen && (gongInfo.shen || gongInfo.baShen) ? (
             <motion.div
@@ -778,7 +778,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
         </div>
 
         {/* 左下：八门 */}
-        <div className="text-left">
+        <div className="text-left flex flex-col justify-center">
           <div className="text-[10px] sm:text-sm text-gray-400">八门</div>
           {showBaMen && (gongInfo.men || gongInfo.baMen) ? (
             <motion.div
@@ -796,7 +796,7 @@ function AnimatedGongCell({ gongNum: _gongNum, gongName, gongInfo, tianGan, diGa
         </div>
 
         {/* 右下：九星 */}
-        <div className="text-right">
+        <div className="text-right flex flex-col justify-center">
           <div className="text-[10px] sm:text-sm text-gray-400">九星</div>
           {showJiuXing && (gongInfo.xing || gongInfo.jiuXing) ? (
             <motion.div
