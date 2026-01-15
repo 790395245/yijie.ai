@@ -149,6 +149,9 @@ export async function interpretWithOpenAI(
 
   try {
     let fullResponse = '';
+    let reasoningContent = '';
+    let hasStartedThinking = false;  // 是否已发送thinking开始标签
+    let hasEndedThinking = false;    // 是否已发送thinking结束标签
     const url = `${baseURL}/chat/completions`;
 
     const response = await fetch(url, {
@@ -195,9 +198,37 @@ export async function interpretWithOpenAI(
 
           try {
             const json = JSON.parse(data);
-            const content = json.choices?.[0]?.delta?.content;
+            const delta = json.choices?.[0]?.delta;
+
+            // 处理推理内容（思考过程）
+            const reasoning = delta?.reasoning_content;
+            if (reasoning) {
+              reasoningContent += reasoning;
+
+              // 第一次收到reasoning_content时，发送thinking开始标签
+              if (!hasStartedThinking && onChunk) {
+                onChunk('<thinking>\n');
+                hasStartedThinking = true;
+              }
+
+              // 实时发送思考内容
+              if (onChunk) {
+                onChunk(reasoning);
+              }
+            }
+
+            // 处理正式回答内容
+            const content = delta?.content;
             if (content) {
               fullResponse += content;
+
+              // 第一次收到content时，如果有thinking内容，先发送结束标签
+              if (hasStartedThinking && !hasEndedThinking && onChunk) {
+                onChunk('\n</thinking>\n\n');
+                hasEndedThinking = true;
+              }
+
+              // 发送正式内容
               if (onChunk) {
                 onChunk(content);
               }
@@ -209,7 +240,13 @@ export async function interpretWithOpenAI(
       }
     }
 
-    return fullResponse;
+    // 如果有推理内容，将其包装成thinking标签
+    let finalResponse = fullResponse;
+    if (reasoningContent) {
+      finalResponse = `<thinking>\n${reasoningContent}\n</thinking>\n\n${fullResponse}`;
+    }
+
+    return finalResponse;
   } catch (error) {
     // 如果是用户主动取消，直接抛出原始错误
     if (error instanceof Error && error.name === 'AbortError') {

@@ -844,10 +844,10 @@ export function calculate(date: Date, options: any = {}): QiMenResult {
 
     // 获取四柱
     const siZhu = {
-      year: lunar.getDayInGanZhi(), // 暂时使用日干支
-      month: lunar.getDayInGanZhi(), // 暂时使用日干支
-      day: lunar.getDayInGanZhi(),
-      time: lunar.getTimeInGanZhi()
+      year: (lunar as any).getYearInGanZhi(), // 年干支
+      month: (lunar as any).getMonthInGanZhi(), // 月干支
+      day: lunar.getDayInGanZhi(), // 日干支
+      time: (lunar as any).getTimeInGanZhi() // 时干支
     };
 
     // 计算局数

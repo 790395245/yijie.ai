@@ -14,18 +14,30 @@ interface MessageContentProps {
 function parseMessageContent(content: string): {
   thinkingContent: string | null;
   normalContent: string;
+  isThinkingInProgress: boolean;
 } {
-  // 匹配 <thinking>...</thinking> 标签
-  const thinkingRegex = /<thinking>([\s\S]*?)<\/thinking>/i;
-  const match = content.match(thinkingRegex);
+  // 先尝试匹配完整的 <thinking>...</thinking> 标签
+  const completeThinkingRegex = /<thinking>([\s\S]*?)<\/thinking>/i;
+  const completeMatch = content.match(completeThinkingRegex);
 
-  if (match) {
-    const thinkingContent = match[1].trim();
-    const normalContent = content.replace(thinkingRegex, '').trim();
-    return { thinkingContent, normalContent };
+  if (completeMatch) {
+    const thinkingContent = completeMatch[1].trim();
+    const normalContent = content.replace(completeThinkingRegex, '').trim();
+    return { thinkingContent, normalContent, isThinkingInProgress: false };
   }
 
-  return { thinkingContent: null, normalContent: content };
+  // 如果没有完整标签，尝试匹配不完整的 <thinking> 标签（流式输出中）
+  const incompleteThinkingRegex = /<thinking>([\s\S]*?)$/i;
+  const incompleteMatch = content.match(incompleteThinkingRegex);
+
+  if (incompleteMatch) {
+    const thinkingContent = incompleteMatch[1].trim();
+    // 移除thinking标签及其内容，剩余的是正常内容
+    const normalContent = content.replace(/<thinking>[\s\S]*$/i, '').trim();
+    return { thinkingContent, normalContent, isThinkingInProgress: true };
+  }
+
+  return { thinkingContent: null, normalContent: content, isThinkingInProgress: false };
 }
 
 /**
@@ -34,7 +46,7 @@ function parseMessageContent(content: string): {
  */
 export function MessageContent({ content }: MessageContentProps) {
   const [isThinkingExpanded, setIsThinkingExpanded] = useState(false);
-  const { thinkingContent, normalContent } = parseMessageContent(content);
+  const { thinkingContent, normalContent, isThinkingInProgress } = parseMessageContent(content);
 
   // Markdown渲染配置
   const markdownComponents = {
@@ -64,6 +76,9 @@ export function MessageContent({ content }: MessageContentProps) {
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-400">💭</span>
               <span className="text-sm font-medium text-gray-300">思考过程</span>
+              {isThinkingInProgress && (
+                <span className="text-xs text-gray-400 animate-pulse">进行中...</span>
+              )}
             </div>
             <motion.span
               animate={{ rotate: isThinkingExpanded ? 180 : 0 }}
