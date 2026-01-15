@@ -245,3 +245,6 @@ AI解读失败: TypeError: Cannot read properties of undefined (reading 'stream'
 用户指令记录 - 2026-01-13
 
 任务：现在手机显示的九宫横向被压扁了，我希望移动端的九宫也尽量是正方形
+用户指令记录 - 2026-01-15
+
+任务：AI解读时，优化思考内容的展示

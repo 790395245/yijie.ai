@@ -32,3 +32,5 @@ dist-ssr
 
 # 只提交示例配置文件
 !.env.example
+
+temp/

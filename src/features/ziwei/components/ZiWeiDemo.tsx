@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { timePaiPan, ZiWeiPan, parseZiWeiPan } from '../index';
 import { interpretWithClaude, interpretWithOpenAI } from '@/lib/ai';
 import { SettingsPanel } from '@/components/SettingsPanel';
+import { MessageContent } from '@/components/MessageContent';
 
 interface ZiWeiDemoProps {
   isSettingsOpen: boolean;
@@ -207,27 +206,7 @@ export function ZiWeiDemo({ isSettingsOpen, onSettingsClose }: ZiWeiDemoProps) {
                     {message.role === 'user' ? '👤 您' : '🤖 AI'}
                   </span>
                 </div>
-                <div className="text-gray-200 prose prose-invert prose-base max-w-none leading-relaxed">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkGfm]}
-                    components={{
-                      h1: ({node, ...props}) => <h1 className="text-2xl font-bold mt-6 mb-4 text-purple-300" {...props} />,
-                      h2: ({node, ...props}) => <h2 className="text-xl font-bold mt-5 mb-3 text-purple-300" {...props} />,
-                      h3: ({node, ...props}) => <h3 className="text-lg font-bold mt-4 mb-2 text-purple-300" {...props} />,
-                      p: ({node, ...props}) => <p className="mb-4 leading-relaxed" {...props} />,
-                      ul: ({node, ...props}) => <ul className="mb-4 ml-6 space-y-2" {...props} />,
-                      ol: ({node, ...props}) => <ol className="mb-4 ml-6 space-y-2" {...props} />,
-                      li: ({node, ...props}) => <li className="leading-relaxed" {...props} />,
-                      code: ({node, ...props}: any) =>
-                        props.inline
-                          ? <code className="bg-purple-900/50 px-1.5 py-0.5 rounded text-purple-200" {...props} />
-                          : <code className="block bg-purple-900/50 p-3 rounded my-3 overflow-x-auto" {...props} />,
-                      blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-purple-500 pl-4 italic my-4" {...props} />,
-                    }}
-                  >
-                    {message.content}
-                  </ReactMarkdown>
-                </div>
+                <MessageContent content={message.content} role={message.role} />
               </div>
             ))}
             <div ref={messagesEndRef} />
